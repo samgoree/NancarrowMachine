@@ -1,0 +1,24 @@
+NancarrowMachine plans
+
+I am going to generate canons in the style of Nancarrow's Study no. 19 for player piano
+N voices, each voice across M half steps, L half steps total range of the instrument, tempo ratios R[], R[i] <= 1, R[0] == 1
+
+GeneratePiece (int N, int M, int L, double[] R)
+	C = (L - M)/N is the interval of imitation (M, L, C are in half steps)
+	
+	randomly generate talea[0] (a short list of note durations) - array of integers
+	for m in [1, M/12)
+		generate talea[m] by incrementing each note's duration from talea[m-1], then randomly incrementing or decrementing one element
+	
+	Calculate the length (L) of the piece as the LCM of the sums of each talea
+	
+	Write a	melody (This is the hard part) as a list of integer half steps (<12)above the tonic
+	for m in [1, M/12)
+		 for each note length i in talea[m]
+			create a note of length talea[m][i] at the current time
+			set the pitch of each note equal to the pitch of the temporally nearest other note, transposed to the right octave
+			increment the current time by talea[m][i]
+	
+	for n in [0, N)
+		Calculate the delay between the start of the piece and the start of the nth voice as the difference in lengths L - (L * R[n])
+		Enter the melody , with all note lengths scaled by R[n] and transposed up by C*n
